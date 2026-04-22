@@ -2,55 +2,61 @@ package com.example.backend.controller;
 
 import com.example.backend.entity.PolicyCheck;
 import com.example.backend.repository.PolicyCheckRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/policy-checks")
+@CrossOrigin(origins = "*")
 public class PolicyCheckController {
 
-    private final PolicyCheckRepository repository;
-
-    public PolicyCheckController(PolicyCheckRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private PolicyCheckRepository repository;
 
     // GET ALL
     @GetMapping
-    public List<PolicyCheck> getAllPolicies() {
+    public List<PolicyCheck> getAll() {
         return repository.findAll();
     }
 
-    //  GET BY ID
+    // GET BY ID
     @GetMapping("/{id}")
-    public PolicyCheck getPolicyById(@PathVariable Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Policy not found with id " + id));
+    public PolicyCheck getById(@PathVariable Long id) {
+        return repository.findById(id).orElse(null);
     }
 
-    //  POST
+    // CREATE
     @PostMapping
-    public PolicyCheck createPolicy(@RequestBody PolicyCheck policyCheck) {
+    public PolicyCheck create(@RequestBody PolicyCheck policyCheck) {
         return repository.save(policyCheck);
     }
 
-    //  PUT (UPDATE)
+    // UPDATE
     @PutMapping("/{id}")
-    public PolicyCheck updatePolicy(@PathVariable Long id, @RequestBody PolicyCheck updatedPolicy) {
-        return repository.findById(id).map(policy -> {
-            policy.setPolicyName(updatedPolicy.getPolicyName());
-            policy.setInputText(updatedPolicy.getInputText());
-            policy.setComplianceStatus(updatedPolicy.getComplianceStatus());
-            policy.setDeleted(updatedPolicy.isDeleted());
-            return repository.save(policy);
-        }).orElseThrow(() -> new RuntimeException("Policy not found with id " + id));
+    public PolicyCheck update(@PathVariable Long id, @RequestBody PolicyCheck policyCheck) {
+        PolicyCheck existing = repository.findById(id).orElse(null);
+        if (existing != null) {
+            existing.setPolicyName(policyCheck.getPolicyName());
+            existing.setComplianceStatus(policyCheck.getComplianceStatus());
+            return repository.save(existing);
+        }
+        return null;
     }
 
-    //delete
+    // DELETE
     @DeleteMapping("/{id}")
-    public void deletePolicy(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         repository.deleteById(id);
+    }
+
+    // SEARCH BY STATUS (NEW FEATURE)
+    @GetMapping("/status/{status}")
+    public List<PolicyCheck> getByStatus(@PathVariable String status) {
+        return repository.findAll()
+                .stream()
+                .filter(p -> p.getComplianceStatus().equalsIgnoreCase(status))
+                .toList();
     }
 }
