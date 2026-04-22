@@ -1,62 +1,126 @@
-
-# Policy Compliance Testing
+# Policy Compliance Testing System
 
 ## Project Overview
-This project is a Policy Compliance Testing system built using Spring Boot. It allows managing policy data and checking compliance through REST APIs.
+The Policy Compliance Testing System is a full-stack application developed to manage and evaluate policy compliance.  
+It allows users to create, retrieve, update, and delete policy records and check compliance status using REST APIs.
 
-## Technologies Used
-- Java
-- Spring Boot
-- Spring Data JPA
-- H2 Database
-- REST APIs
-- Postman
+This project was developed as part of a 5-day backend development task using Spring Boot.
 
-## Work Completed
+## Tech Stack
+- Backend: Java, Spring Boot
+- Database: H2 / MySQL
+- API Testing: Postman
+- Version Control: Git & GitHub
+- IDE: VS Code
+  
+## Features
+- Create new policy records
+- Retrieve all policies
+- Filter policies by compliance status
+- Update existing policies
+- Delete policies
+- RESTful API design
+- Database integration using JPA
 
-### Day 1 - Project Setup
+## Day-wise Progress
+
+### Day 1 – Project Setup
+- Installed Java, Spring Boot dependencies
 - Created Spring Boot project
-- Set up project structure (controller, entity, repository)
-- Configured H2 in-memory database
-- Successfully ran backend application
+- Setup project structure
+- Configured application.properties
+- Verified project running on localhost
+  
+### Day 2 – Entity & Repository Layer
+- Created PolicyCheck entity class
+- Added fields:
+  - id
+  - policyName
+  - complianceStatus
+  - inputText
+  - deleted
+- Configured JPA annotations (@Entity, @Id)
+- Created PolicyCheckRepository interface
+- Extended JpaRepository
 
-### Day 2 - CRUD API Implementation
-- Implemented REST APIs:
-  - POST (Create policy)
-  - GET (Get all policies)
-  - GET by ID
-  - PUT (Update policy)
-  - DELETE (Delete policy)
-- Tested all APIs using Postman
-- Fixed errors and ensured correct responses
+### Day 3 – Controller Development (GET & POST)
+- Created PolicyCheckController
+- Implemented:
+  - POST API → Add new policy
+  - GET API → Fetch all policies
+- Tested APIs using Postman
+- Verified data stored in database
 
----
+### Day 4 – Advanced APIs (Filter, Update, Delete)
+- Implemented:
+  - GET by compliance status
+  - PUT API → Update policy
+  - DELETE API → Delete policy
+- Handled exceptions
+- Improved API responses
+- Verified all APIs using Postman
 
-### Day 3 - GitHub Workflow
-- Cloned team repository
-- Forked repository
-- Copied backend code into cloned project
-- Successfully pushed code to forked repository
-- Created Pull Request for submission
+### Day 5 – Testing & Deployment
+- Tested all APIs:
+  - POST ✔
+  - GET ✔
+  - PUT ✔
+  - DELETE ✔
+- Fixed errors and bugs
+- Integrated GitHub
+- Pushed project to repository
+- Created Pull Request
 
 ## API Endpoints
 
-### Policy APIs
-- GET /policy-checks
-- GET /policy-checks/{id}
-- POST /policy-checks
-- PUT /policy-checks/{id}
-- DELETE /policy-checks/{id}
+### Create Policy
+POST /policy-checks
 
-## Testing
-- APIs tested using Postman
-- Backend running on:
-  http://localhost:8082
+{   "policyName": "Test Policy",   "complianceStatus": "PASS" }
 
-## Current Status
-✔ Backend setup completed  
-✔ CRUD APIs implemented  
-✔ GitHub workflow completed (clone, fork, push, PR)  
+### Get All Policies
+GET /policy-checks
 
-## Author
-Rachana Shivakumar Kallimani
+### Get by Status
+GET /policy-checks/status/{status}
+
+### Update Policy
+PUT /policy-checks/{id}
+
+### Delete Policy
+DELETE /policy-checks/{id}
+
+## How to Run Project
+
+1. Clone repository
+git clone <your-repo-link>
+
+2. Open in VS Code
+
+3. Run Spring Boot Application
+BackendApplication.java
+
+4. Access APIs:
+http://localhost:8082
+
+## 📸 Output Screenshots
+- Postman API responses
+- Backend running logs
+- GitHub repository
+
+##  Conclusion
+This project demonstrates:
+- REST API development using Spring Boot
+- CRUD operations with database
+- Backend architecture design
+- Git & GitHub integration
+
+## Future Scope
+- Add frontend (React / Angular)
+- Implement authentication
+- Improve UI/UX
+- Add real-time monitoring
+
+## 👩‍💻 Author
+Rachna Kallimani  
+ECE Student | Java Full Stack Int
