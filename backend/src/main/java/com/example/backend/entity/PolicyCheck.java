@@ -3,7 +3,6 @@ package com.example.backend.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "policy_checks")
 public class PolicyCheck {
 
     @Id
@@ -11,17 +10,17 @@ public class PolicyCheck {
     private Long id;
 
     private String policyName;
-
     private String complianceStatus;
-
     private String inputText;
+    private boolean deleted = false;
 
-    private boolean deleted;
-
-    // Getters and Setters
-
+    // Getters & Setters
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getPolicyName() {
