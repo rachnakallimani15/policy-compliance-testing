@@ -1,20 +1,32 @@
 package com.example.backend.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "policy_checks")
 public class PolicyCheck {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "policy_name")
     private String policyName;
+
+    @Column(name = "compliance_status")
     private String complianceStatus;
+
+    @Column(name = "input_text")
     private String inputText;
+
     private boolean deleted = false;
 
-    // Getters & Setters
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    // Getters and Setters
+
     public Long getId() {
         return id;
     }
@@ -53,5 +65,13 @@ public class PolicyCheck {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
