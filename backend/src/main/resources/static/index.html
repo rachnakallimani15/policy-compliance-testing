@@ -54,8 +54,9 @@
         li {
             background: #eee;
             margin: 5px;
-            padding: 8px;
+            padding: 10px;
             border-radius: 5px;
+            text-align: left;
         }
 
         .delete {
@@ -94,6 +95,7 @@
 
 let editId = null;
 
+// LOAD
 function loadPolicies() {
     fetch("/policy-checks")
     .then(res => res.json())
@@ -102,11 +104,16 @@ function loadPolicies() {
         list.innerHTML = "";
 
         data.forEach(p => {
+
+            if (!p.policyName) return;
+
             let li = document.createElement("li");
 
             li.innerHTML =
-                p.policyName + " - " + p.complianceStatus +
-                " <button class='edit' onclick='editPolicy(" + p.id + ")'>Edit</button>" +
+                "<b>Policy Name:</b> " + p.policyName +
+                "<br><b>Input:</b> " + p.inputText +
+                "<br><b>Status:</b> " + p.complianceStatus +
+                "<br><button class='edit' onclick='editPolicy(" + p.id + ")'>Edit</button>" +
                 " <button class='delete' onclick='deletePolicy(" + p.id + ")'>Delete</button>";
 
             list.appendChild(li);
@@ -114,15 +121,27 @@ function loadPolicies() {
     });
 }
 
+// ADD + UPDATE
 function savePolicy() {
 
+    let name = document.getElementById("name").value;
+    let input = document.getElementById("input").value;
+    let status = document.getElementById("status").value;
+
+    // VALIDATION
+    if (name === "" || input === "" || status === "") {
+        alert("All fields are required!");
+        return;
+    }
+
     let data = {
-        policyName: document.getElementById("name").value,
-        inputText: document.getElementById("input").value,
-        complianceStatus: document.getElementById("status").value
+        policyName: name,
+        inputText: input,
+        complianceStatus: status
     };
 
     if (editId === null) {
+        // ADD
         fetch("/policy-checks", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
@@ -130,6 +149,7 @@ function savePolicy() {
         }).then(() => loadPolicies());
 
     } else {
+        // UPDATE
         fetch("/policy-checks/" + editId, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
@@ -141,12 +161,14 @@ function savePolicy() {
     }
 }
 
+// DELETE
 function deletePolicy(id) {
     fetch("/policy-checks/" + id, {
         method: "DELETE"
     }).then(() => loadPolicies());
 }
 
+// EDIT
 function editPolicy(id) {
     fetch("/policy-checks")
     .then(res => res.json())
