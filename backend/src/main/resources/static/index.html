@@ -1,186 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Policy Compliance</title>
-
-    <style>
-        body {
-            font-family: Arial;
-            background-color: #f4f6f8;
-            text-align: center;
-        }
-
-        .container {
-            width: 400px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px gray;
-            margin-top: 40px;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        input {
-            width: 90%;
-            padding: 8px;
-            margin: 8px;
-            border-radius: 5px;
-            border: 1px solid gray;
-        }
-
-        button {
-            padding: 8px 15px;
-            margin: 5px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            background: #eee;
-            margin: 5px;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: left;
-        }
-
-        .delete {
-            background-color: red;
-        }
-
-        .edit {
-            background-color: green;
-        }
-    </style>
+    <title>Policy Compliance System</title>
 </head>
-
 <body>
 
-<div class="container">
+<h2>Policy Compliance System</h2>
 
-<h1>Policy Compliance System</h1>
-
-<h3>Add / Update Policy</h3>
-
-<input id="name" placeholder="Policy Name"><br>
-<input id="input" placeholder="Input Text"><br>
-<input id="status" placeholder="Status"><br>
+<input type="text" id="policyName" placeholder="Policy Name"><br><br>
+<input type="text" id="inputText" placeholder="Input Text"><br><br>
+<input type="text" id="status" placeholder="Status"><br><br>
 
 <button onclick="savePolicy()">Save Policy</button>
-
-<h3>All Policies</h3>
-
 <button onclick="loadPolicies()">Load Policies</button>
 
-<ul id="list"></ul>
+<hr>
 
-</div>
+<h3>🔍 Search by Status</h3>
+
+<input type="text" id="searchStatus" placeholder="Enter Status (COMPLIANT)">
+<button onclick="searchPolicy()">Search</button>
+
+<hr>
+
+<div id="result"></div>
 
 <script>
 
-let editId = null;
+function savePolicy() {
+    const policy = {
+        policyName: document.getElementById("policyName").value,
+        inputText: document.getElementById("inputText").value,
+        status: document.getElementById("status").value
+    };
 
-// LOAD
-function loadPolicies() {
-    fetch("/policy-checks")
-    .then(res => res.json())
-    .then(data => {
-        let list = document.getElementById("list");
-        list.innerHTML = "";
-
-        data.forEach(p => {
-
-            if (!p.policyName) return;
-
-            let li = document.createElement("li");
-
-            li.innerHTML =
-                "<b>Policy Name:</b> " + p.policyName +
-                "<br><b>Input:</b> " + p.inputText +
-                "<br><b>Status:</b> " + p.complianceStatus +
-                "<br><button class='edit' onclick='editPolicy(" + p.id + ")'>Edit</button>" +
-                " <button class='delete' onclick='deletePolicy(" + p.id + ")'>Delete</button>";
-
-            list.appendChild(li);
-        });
+    fetch("http://localhost:8080/policies", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(policy)
+    }).then(() => {
+        alert("Saved!");
     });
 }
 
-// ADD + UPDATE
-function savePolicy() {
-
-    let name = document.getElementById("name").value;
-    let input = document.getElementById("input").value;
-    let status = document.getElementById("status").value;
-
-    // VALIDATION
-    if (name === "" || input === "" || status === "") {
-        alert("All fields are required!");
-        return;
-    }
-
-    let data = {
-        policyName: name,
-        inputText: input,
-        complianceStatus: status
-    };
-
-    if (editId === null) {
-        // ADD
-        fetch("/policy-checks", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
-        }).then(() => loadPolicies());
-
-    } else {
-        // UPDATE
-        fetch("/policy-checks/" + editId, {
-            method: "PUT",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
-        }).then(() => {
-            editId = null;
-            loadPolicies();
-        });
-    }
+function loadPolicies() {
+    fetch("http://localhost:8080/policies")
+        .then(res => res.json())
+        .then(data => display(data));
 }
 
-// DELETE
+function searchPolicy() {
+    const status = document.getElementById("searchStatus").value;
+
+    fetch(`http://localhost:8080/policies/status/${status}`)
+        .then(res => res.json())
+        .then(data => display(data));
+}
+
 function deletePolicy(id) {
-    fetch("/policy-checks/" + id, {
+    fetch(`http://localhost:8080/policies/${id}`, {
         method: "DELETE"
     }).then(() => loadPolicies());
 }
 
-// EDIT
-function editPolicy(id) {
-    fetch("/policy-checks")
-    .then(res => res.json())
-    .then(data => {
-        let p = data.find(x => x.id === id);
-
-        document.getElementById("name").value = p.policyName;
-        document.getElementById("input").value = p.inputText;
-        document.getElementById("status").value = p.complianceStatus;
-
-        editId = id;
+function display(data) {
+    let output = "";
+    data.forEach(p => {
+        output += `
+            <div>
+                <p><b>Policy Name:</b> ${p.policyName}</p>
+                <p><b>Input:</b> ${p.inputText}</p>
+                <p><b>Status:</b> ${p.status}</p>
+                <button onclick="deletePolicy(${p.id})">Delete</button>
+            </div>
+            <hr/>
+        `;
     });
+    document.getElementById("result").innerHTML = output;
 }
 
 </script>

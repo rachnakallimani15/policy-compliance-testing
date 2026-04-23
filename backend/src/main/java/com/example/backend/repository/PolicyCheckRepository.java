@@ -6,6 +6,5 @@ import java.util.List;
 
 public interface PolicyCheckRepository extends JpaRepository<PolicyCheck, Long> {
 
-    // THIS LINE WAS MISSING
-    List<PolicyCheck> findByComplianceStatus(String complianceStatus);
+    List<PolicyCheck> findByStatus(String status); // Day 7 feature
 }

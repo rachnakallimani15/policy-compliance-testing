@@ -8,42 +8,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/policy-checks")
-@CrossOrigin
+@CrossOrigin("*")
+@RequestMapping("/policies")
 public class PolicyCheckController {
 
     @Autowired
-    private PolicyCheckRepository policyCheckRepository;
+    private PolicyCheckRepository repository;
+
+    // SAVE
+    @PostMapping
+    public PolicyCheck savePolicy(@RequestBody PolicyCheck policy) {
+        return repository.save(policy);
+    }
 
     // GET ALL
     @GetMapping
-    public List<PolicyCheck> getAll() {
-        return policyCheckRepository.findAll();
-    }
-
-    // ADD
-    @PostMapping
-    public PolicyCheck addPolicy(@RequestBody PolicyCheck policyCheck) {
-        return policyCheckRepository.save(policyCheck);
+    public List<PolicyCheck> getAllPolicies() {
+        return repository.findAll();
     }
 
     // DELETE
     @DeleteMapping("/{id}")
     public void deletePolicy(@PathVariable Long id) {
-        policyCheckRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
-    // UPDATE
-    @PutMapping("/{id}")
-    public PolicyCheck updatePolicy(@PathVariable Long id, @RequestBody PolicyCheck updatedPolicy) {
-
-        PolicyCheck existing = policyCheckRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Policy not found"));
-
-        existing.setPolicyName(updatedPolicy.getPolicyName());
-        existing.setInputText(updatedPolicy.getInputText());
-        existing.setComplianceStatus(updatedPolicy.getComplianceStatus());
-
-        return policyCheckRepository.save(existing);
+    // 🔥 DAY 7 → SEARCH BY STATUS
+    @GetMapping("/status/{status}")
+    public List<PolicyCheck> getByStatus(@PathVariable String status) {
+        return repository.findByStatus(status);
     }
 }

@@ -1,16 +1,59 @@
-# React + Vite
+# Policy Compliance Testing System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+The Policy Compliance Testing System is a full-stack application designed to manage and validate policy data efficiently.
 
-Currently, two official plugins are available:
+It allows users to:
+- Add new policies
+- View all stored policies
+- Update existing policies
+- Delete policies
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The system ensures proper validation and smooth interaction between frontend and backend.
 
-## React Compiler
+## System Architecture
+- **Frontend** → HTML, CSS, JavaScript
+- **Backend** → Spring Boot (Java)
+- **Database** → MySQL
+- **Build Tool** → Maven
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features Implemented
 
-## Expanding the ESLint configuration
+###  Day 1 – Project Setup
+- Spring Boot project initialized
+- Basic structure configured
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+###  Day 2 – Database Integration
+- MySQL database connected
+- Table created using `V1_init.sql`
+
+###  Day 3 – Backend Development
+- REST APIs created
+  - POST → Add policy
+  - GET → Fetch policies
+
+###  Day 4 – Frontend Development
+- UI created using HTML & CSS
+- Policy input form implemented
+
+###  Day 5 – Integration
+- Connected frontend with backend APIs
+- Tested APIs using Postman
+- Data stored and retrieved successfully
+
+###  Day 6 – Enhancements
+- Form validation added (All fields required)
+- Edit functionality implemented
+- Delete functionality implemented
+- UI improvements for better user experience
+
+## Screenshot
+
+###  Day 6 UI Output
+![UI](screenshots/day6.png)-![alt text](<day 6.png>)
+
+##  How to Run
+
+###  Backend
+```bash
+mvn spring-boot:run
