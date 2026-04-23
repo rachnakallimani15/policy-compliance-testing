@@ -45,12 +45,15 @@ The system ensures proper validation and smooth interaction between frontend and
 - Form validation added (All fields required)
 - Edit functionality implemented
 - Delete functionality implemented
+- search by status implemented
 - UI improvements for better user experience
+
 
 ## Screenshot
 
 ###  Day 6 UI Output
 ![UI](screenshots/day6.png)-![alt text](<day 6.png>)
+![UI](screenshots/day6.png)-![alt text](<day 6(main).png>)
 
 ##  How to Run
 
