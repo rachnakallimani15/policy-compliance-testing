@@ -8,34 +8,45 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
-@RequestMapping("/policies")
+@CrossOrigin
 public class PolicyCheckController {
 
     @Autowired
     private PolicyCheckRepository repository;
 
-    // SAVE
-    @PostMapping
+    // CREATE
+    @PostMapping("/save")
     public PolicyCheck savePolicy(@RequestBody PolicyCheck policy) {
         return repository.save(policy);
     }
 
-    // GET ALL
-    @GetMapping
-    public List<PolicyCheck> getAllPolicies() {
+    // READ ALL
+    @GetMapping("/all")
+    public List<PolicyCheck> getAll() {
         return repository.findAll();
     }
 
     // DELETE
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deletePolicy(@PathVariable Long id) {
         repository.deleteById(id);
     }
 
-    // 🔥 DAY 7 → SEARCH BY STATUS
-    @GetMapping("/status/{status}")
-    public List<PolicyCheck> getByStatus(@PathVariable String status) {
+    // UPDATE (IMPORTANT)
+    @PutMapping("/update/{id}")
+    public PolicyCheck updatePolicy(@PathVariable Long id, @RequestBody PolicyCheck policy) {
+        PolicyCheck existing = repository.findById(id).orElseThrow();
+
+        existing.setName(policy.getName());
+        existing.setInput(policy.getInput());
+        existing.setStatus(policy.getStatus());
+
+        return repository.save(existing);
+    }
+
+    // SEARCH
+    @GetMapping("/search/{status}")
+    public List<PolicyCheck> search(@PathVariable String status) {
         return repository.findByStatus(status);
     }
 }

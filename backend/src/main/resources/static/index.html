@@ -2,81 +2,156 @@
 <html>
 <head>
     <title>Policy Compliance System</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 40px;
+        }
+        input, select {
+            display: block;
+            margin: 10px 0;
+            padding: 8px;
+            width: 250px;
+        }
+        button {
+            padding: 8px 12px;
+            margin-right: 10px;
+        }
+        .policy {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
+
 <body>
 
-<h2>Policy Compliance System</h2>
+<h1>Policy Compliance System</h1>
 
-<input type="text" id="policyName" placeholder="Policy Name"><br><br>
-<input type="text" id="inputText" placeholder="Input Text"><br><br>
-<input type="text" id="status" placeholder="Status"><br><br>
+<input type="text" id="policyName" placeholder="Policy Name">
+<input type="text" id="inputText" placeholder="Input Text">
+
+<!-- UPDATED DROPDOWN -->
+<select id="status">
+    <option value="">Select Status</option>
+    <option value="COMPLAINT">COMPLAINT</option>
+    <option value="APPROVED">APPROVED</option>
+    <option value="PENDING">PENDING</option>
+</select>
 
 <button onclick="savePolicy()">Save Policy</button>
 <button onclick="loadPolicies()">Load Policies</button>
 
 <hr>
 
-<h3>🔍 Search by Status</h3>
+<h2>Search by Status</h2>
+<input type="text" id="searchStatus" placeholder="Enter Status">
+<button onclick="searchByStatus()">Search</button>
 
-<input type="text" id="searchStatus" placeholder="Enter Status (COMPLIANT)">
-<button onclick="searchPolicy()">Search</button>
-
-<hr>
-
-<div id="result"></div>
+<div id="policyList"></div>
 
 <script>
 
-function savePolicy() {
-    const policy = {
-        policyName: document.getElementById("policyName").value,
-        inputText: document.getElementById("inputText").value,
-        status: document.getElementById("status").value
-    };
+let editId = null;
 
-    fetch("http://localhost:8080/policies", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(policy)
-    }).then(() => {
-        alert("Saved!");
+function savePolicy() {
+    const name = document.getElementById("policyName").value;
+    const input = document.getElementById("inputText").value;
+    const status = document.getElementById("status").value;
+
+    if (!name || !input || !status) {
+        alert("All fields required!");
+        return;
+    }
+
+    let url = "http://localhost:8080/policies";
+    let method = "POST";
+
+    if (editId) {
+        url += "/" + editId;
+        method = "PUT";
+    }
+
+    fetch(url, {
+        method: method,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            policyName: name,
+            inputText: input,
+            status: status
+        })
+    })
+    .then(res => res.json())
+    .then(() => {
+        alert(editId ? "Updated!" : "Saved!");
+        editId = null;
+        clearForm();
+        loadPolicies();
     });
 }
 
 function loadPolicies() {
     fetch("http://localhost:8080/policies")
-        .then(res => res.json())
-        .then(data => display(data));
+    .then(res => res.json())
+    .then(data => {
+        displayPolicies(data);
+    });
 }
 
-function searchPolicy() {
-    const status = document.getElementById("searchStatus").value;
+function displayPolicies(data) {
+    const list = document.getElementById("policyList");
+    list.innerHTML = "";
 
-    fetch(`http://localhost:8080/policies/status/${status}`)
-        .then(res => res.json())
-        .then(data => display(data));
+    data.forEach(p => {
+        list.innerHTML += `
+            <div class="policy">
+                <p><b>Name:</b> ${p.policyName}</p>
+                <p><b>Input:</b> ${p.inputText}</p>
+                <p><b>Status:</b> ${p.status}</p>
+
+                <button onclick="editPolicy(${p.id}, '${p.policyName}', '${p.inputText}', '${p.status}')">Edit</button>
+                <button onclick="deletePolicy(${p.id})">Delete</button>
+            </div>
+        `;
+    });
 }
 
 function deletePolicy(id) {
-    fetch(`http://localhost:8080/policies/${id}`, {
+    fetch("http://localhost:8080/policies/" + id, {
         method: "DELETE"
-    }).then(() => loadPolicies());
+    })
+    .then(() => {
+        alert("Deleted!");
+        loadPolicies();
+    });
 }
 
-function display(data) {
-    let output = "";
-    data.forEach(p => {
-        output += `
-            <div>
-                <p><b>Policy Name:</b> ${p.policyName}</p>
-                <p><b>Input:</b> ${p.inputText}</p>
-                <p><b>Status:</b> ${p.status}</p>
-                <button onclick="deletePolicy(${p.id})">Delete</button>
-            </div>
-            <hr/>
-        `;
+function editPolicy(id, name, input, status) {
+    document.getElementById("policyName").value = name;
+    document.getElementById("inputText").value = input;
+    document.getElementById("status").value = status;
+
+    editId = id;
+}
+
+function searchByStatus() {
+    const status = document.getElementById("searchStatus").value;
+
+    fetch("http://localhost:8080/policies")
+    .then(res => res.json())
+    .then(data => {
+        const filtered = data.filter(p => p.status === status);
+        displayPolicies(filtered);
     });
-    document.getElementById("result").innerHTML = output;
+}
+
+function clearForm() {
+    document.getElementById("policyName").value = "";
+    document.getElementById("inputText").value = "";
+    document.getElementById("status").value = "";
 }
 
 </script>
