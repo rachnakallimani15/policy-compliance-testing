@@ -48,12 +48,23 @@ The system ensures proper validation and smooth interaction between frontend and
 - search by status implemented
 - UI improvements for better user experience
 
+### Day 7 - Enhancements
+
+- Implemented Update (Edit) functionality
+- Completed full CRUD operations (Create, Read, Update, Delete)
+- Added Search by Status feature
+- Improved UI using dropdown for status selection
+- Form validation added (all fields required)
+- Automatic form reset after saving/updating
+
 
 ## Screenshot
 
 ###  Day 6 UI Output
 ![UI](screenshots/day6.png)-![alt text](<day 6.png>)
 ![UI](screenshots/day6.png)-![alt text](<day 6(main).png>)
+![UI](screenshots/day7.png)-![alt text](<DAY 7_1.png>)
+![UI](screenshots/day7.png)-![alt text](<DAY 7_2.png>)
 
 ##  How to Run
 
