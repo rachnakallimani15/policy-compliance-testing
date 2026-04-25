@@ -70,14 +70,11 @@ The system ensures proper validation and smooth interaction between frontend and
 
 ## Screenshot
 
-###  Day 6 UI Output
-![UI](screenshots/day6.png)-![alt text](<day 6.png>)
-![UI](screenshots/day6.png)-![alt text](<day 6(main).png>)
+![UI](screenshots/day6.png)
+![UI](screenshots/day6main.png)
 
-### Day 7 UI Output
-![UI](screenshots/day7.png)-![alt text](<DAY 7_1.png>)
-
-![UI](screenshots/day7.png)-![alt text](<DAY 7_2.png>)
+![UI](screenshots/day7_1.png)
+![UI](screenshots/day7_2.png)
 
 ###  Backend
 ```bash
