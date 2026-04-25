@@ -69,7 +69,7 @@ The system ensures proper validation and smooth interaction between frontend and
 
 ### Day 6 UI Output
 ![UI](screenshots/day%206(main).png)
-![UI](screenshots/day6main.png)
+![UI](screenshots/day%206main.png)
 
 ### Day 7 UI Output
 ![UI](screenshots/DAY%207_1.png)
