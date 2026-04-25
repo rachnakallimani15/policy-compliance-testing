@@ -65,16 +65,16 @@ The system ensures proper validation and smooth interaction between frontend and
 - Improved UI using dropdown for status selection
 - Form validation added (all fields required)
 - Automatic form reset after saving/updating
-
-
-
 ## Screenshot
 
-![UI](screenshots/day6.png)
-![UI](screenshots/day6main.png)
+### Day 6 UI Output
+![UI](screenshots/day%206(main).png)
+![UI](screenshots/day%207.png)
 
-![UI](screenshots/day7_1.png)
-![UI](screenshots/day7_2.png)
+### Day 7 UI Output
+![UI](screenshots/DAY%207_1.png)
+![UI](screenshots/DAY%207_2.png)
+
 
 ###  Backend
 ```bash
