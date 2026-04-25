@@ -57,35 +57,16 @@ The system ensures proper validation and smooth interaction between frontend and
 - Form validation added (all fields required)
 - Automatic form reset after saving/updating
 
-### Day 7 - Enhancements
-
-- Implemented Update (Edit) functionality
-- Completed full CRUD operations (Create, Read, Update, Delete)
-- Added Search by Status feature
-- Improved UI using dropdown for status selection
-- Form validation added (all fields required)
-- Automatic form reset after saving/updating
-
-
-
 ## Screenshot
 
 ### Day 6 UI Output
-
-<<<<<<< HEAD
-### Day 7 UI Output
-![UI](screenshots/day7.png)-![alt text](<DAY 7_1.png>)
-![UI](screenshots/day7.png)-![alt text](<DAY 7_2.png>)
-=======
-![UI](frontend/day 6(main).png)![alt text](<screenshots/day 6.png>)
-![UI](frontend/day 6.png)![alt text](<screenshots/day 6(main).png>)
+![UI](screenshots/day6.png)
+![UI](screenshots/day6main.png)
 
 ### Day 7 UI Output
+![UI](screenshots/day7_1.png)
+![UI](screenshots/day7_2.png)
 
-![UI](frontend/DAY 7_1.png)![alt text](<screenshots/DAY 7_1.png>)
-![UI](frontend/DAY 7_2.png)![alt text](image.png)
->>>>>>> 5c77321 (fixed all images)
-
-###  Backend
+### Backend
 ```bash
-mvn spring-boot:run
+mvn spring-boot:runs
