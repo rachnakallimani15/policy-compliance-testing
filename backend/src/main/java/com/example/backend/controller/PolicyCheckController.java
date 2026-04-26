@@ -8,45 +8,50 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class PolicyCheckController {
 
     @Autowired
-    private PolicyCheckRepository repository;
+    private PolicyCheckRepository policyCheckRepository;
 
-    // CREATE
+    // ✅ SAVE
     @PostMapping("/save")
-    public PolicyCheck savePolicy(@RequestBody PolicyCheck policy) {
-        return repository.save(policy);
+    public String savePolicy(@RequestBody PolicyCheck policy) {
+        policyCheckRepository.save(policy);
+        return "Saved Successfully";
     }
 
-    // READ ALL
-    @GetMapping("/all")
-    public List<PolicyCheck> getAll() {
-        return repository.findAll();
+    // ✅ GET ALL
+    @GetMapping("/getAll")
+    public List<PolicyCheck> getAllPolicies() {
+        return policyCheckRepository.findAll();
     }
 
-    // DELETE
+    // ✅ DELETE
     @DeleteMapping("/delete/{id}")
-    public void deletePolicy(@PathVariable Long id) {
-        repository.deleteById(id);
+    public String deletePolicy(@PathVariable Long id) {
+        policyCheckRepository.deleteById(id);
+        return "Deleted Successfully";
     }
 
-    // UPDATE (IMPORTANT)
+    // ✅ UPDATE
     @PutMapping("/update/{id}")
-    public PolicyCheck updatePolicy(@PathVariable Long id, @RequestBody PolicyCheck policy) {
-        PolicyCheck existing = repository.findById(id).orElseThrow();
+    public PolicyCheck updatePolicy(@PathVariable Long id, @RequestBody PolicyCheck updatedPolicy) {
+        PolicyCheck policy = policyCheckRepository.findById(id).orElse(null);
 
-        existing.setName(policy.getName());
-        existing.setInput(policy.getInput());
-        existing.setStatus(policy.getStatus());
+        if (policy != null) {
+            policy.setName(updatedPolicy.getName());
+            policy.setInput(updatedPolicy.getInput());
+            policy.setStatus(updatedPolicy.getStatus());
+            return policyCheckRepository.save(policy);
+        }
 
-        return repository.save(existing);
+        return null;
     }
 
-    // SEARCH
+    // ✅ SEARCH
     @GetMapping("/search/{status}")
-    public List<PolicyCheck> search(@PathVariable String status) {
-        return repository.findByStatus(status);
+    public List<PolicyCheck> searchByStatus(@PathVariable String status) {
+        return policyCheckRepository.findByStatus(status);
     }
 }

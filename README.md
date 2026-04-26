@@ -48,25 +48,30 @@ The system ensures proper validation and smooth interaction between frontend and
 - search by status implemented
 - UI improvements for better user experience
 
-### Day 7 - Enhancements
-
+### Day 7
 - Implemented Update (Edit) functionality
 - Completed full CRUD operations (Create, Read, Update, Delete)
 - Added Search by Status feature
 - Improved UI using dropdown for status selection
 - Form validation added (all fields required)
-- Automatic form reset after saving/updating
+- Automatic form reset after saving/updatings
 
-## Screenshot
+##  Day 8 - Enhancements
 
-### Day 6 UI Output
+- Successfully implemented Edit and Delete functionality
+- Displayed all policies dynamically on UI
+- Added total policies count display
+- Improved UI layout for better readability
+- Fixed loading issue after saving policy
+- Integrated frontend with backend APIs properly
+
+### screenshots
+
 ![UI](screenshots/day6.png)
 ![UI](screenshots/day6main.png)
-
-### Day 7 UI Output
 ![UI](screenshots/day7_1.png)
 ![UI](screenshots/day7_2.png)
+![UI](screenshots/day8.png)
 
-### Backend
-```bash
-mvn spring-boot:runs
+
+

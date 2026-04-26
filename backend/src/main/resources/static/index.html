@@ -2,43 +2,20 @@
 <html>
 <head>
     <title>Policy Compliance System</title>
-    <style>
-        body {
-            font-family: Arial;
-            margin: 40px;
-        }
-        input, select {
-            display: block;
-            margin: 10px 0;
-            padding: 8px;
-            width: 250px;
-        }
-        button {
-            padding: 8px 12px;
-            margin-right: 10px;
-        }
-        .policy {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 10px;
-        }
-    </style>
 </head>
-
 <body>
 
 <h1>Policy Compliance System</h1>
 
-<input type="text" id="policyName" placeholder="Policy Name">
-<input type="text" id="inputText" placeholder="Input Text">
+<p id="msg" style="color:green;"></p>
 
-<!-- UPDATED DROPDOWN -->
+<input type="text" id="name" placeholder="Policy Name"><br><br>
+<input type="text" id="input" placeholder="Input"><br><br>
+
 <select id="status">
-    <option value="">Select Status</option>
-    <option value="COMPLAINT">COMPLAINT</option>
-    <option value="APPROVED">APPROVED</option>
+    <option value="COMPLIANT">COMPLIANT</option>
     <option value="PENDING">PENDING</option>
-</select>
+</select><br><br>
 
 <button onclick="savePolicy()">Save Policy</button>
 <button onclick="loadPolicies()">Load Policies</button>
@@ -47,111 +24,98 @@
 
 <h2>Search by Status</h2>
 <input type="text" id="searchStatus" placeholder="Enter Status">
-<button onclick="searchByStatus()">Search</button>
+<button onclick="searchPolicy()">Search</button>
 
-<div id="policyList"></div>
+<hr>
+
+<h3 id="count">Total Policies: 0</h3>
+
+<div id="list"></div>
 
 <script>
 
 let editId = null;
 
+// SAVE
 function savePolicy() {
-    const name = document.getElementById("policyName").value;
-    const input = document.getElementById("inputText").value;
-    const status = document.getElementById("status").value;
+    let policy = {
+        name: document.getElementById("name").value,
+        input: document.getElementById("input").value,
+        status: document.getElementById("status").value
+    };
 
-    if (!name || !input || !status) {
-        alert("All fields required!");
-        return;
-    }
-
-    let url = "http://localhost:8080/policies";
-    let method = "POST";
-
-    if (editId) {
-        url += "/" + editId;
-        method = "PUT";
-    }
+    let url = editId ? "/update/" + editId : "/save";
+    let method = editId ? "PUT" : "POST";
 
     fetch(url, {
         method: method,
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            policyName: name,
-            inputText: input,
-            status: status
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(policy)
     })
-    .then(res => res.json())
+    .then(res => res.json ? res.json() : res.text())
     .then(() => {
-        alert(editId ? "Updated!" : "Saved!");
-        editId = null;
+        document.getElementById("msg").innerText = "Saved Successfully!";
         clearForm();
-        loadPolicies();
+        loadPolicies(); // 🔥 auto refresh
     });
 }
 
+// LOAD
 function loadPolicies() {
-    fetch("http://localhost:8080/policies")
+    fetch("/getAll")
     .then(res => res.json())
-    .then(data => {
-        displayPolicies(data);
-    });
+    .then(data => showPolicies(data));
 }
 
-function displayPolicies(data) {
-    const list = document.getElementById("policyList");
+// SHOW LIST
+function showPolicies(data) {
+    let list = document.getElementById("list");
     list.innerHTML = "";
 
-    data.forEach(p => {
-        list.innerHTML += `
-            <div class="policy">
-                <p><b>Name:</b> ${p.policyName}</p>
-                <p><b>Input:</b> ${p.inputText}</p>
-                <p><b>Status:</b> ${p.status}</p>
+    document.getElementById("count").innerText = "Total Policies: " + data.length;
 
-                <button onclick="editPolicy(${p.id}, '${p.policyName}', '${p.inputText}', '${p.status}')">Edit</button>
-                <button onclick="deletePolicy(${p.id})">Delete</button>
-            </div>
+    data.forEach(p => {
+        if (!p.name && !p.input) return; // ❌ skip empty
+
+        list.innerHTML += `
+            <hr>
+            Name: ${p.name}<br>
+            Input: ${p.input}<br>
+            Status: ${p.status}<br>
+            <button onclick="editPolicy(${p.id}, '${p.name}', '${p.input}', '${p.status}')">Edit</button>
+            <button onclick="deletePolicy(${p.id})">Delete</button>
         `;
     });
 }
 
+// DELETE
 function deletePolicy(id) {
-    fetch("http://localhost:8080/policies/" + id, {
-        method: "DELETE"
-    })
-    .then(() => {
-        alert("Deleted!");
-        loadPolicies();
-    });
+    fetch("/delete/" + id, { method: "DELETE" })
+    .then(() => loadPolicies()); // 🔥 auto refresh
 }
 
+// EDIT
 function editPolicy(id, name, input, status) {
-    document.getElementById("policyName").value = name;
-    document.getElementById("inputText").value = input;
-    document.getElementById("status").value = status;
-
     editId = id;
+    document.getElementById("name").value = name;
+    document.getElementById("input").value = input;
+    document.getElementById("status").value = status;
 }
 
-function searchByStatus() {
-    const status = document.getElementById("searchStatus").value;
+// SEARCH
+function searchPolicy() {
+    let status = document.getElementById("searchStatus").value;
 
-    fetch("http://localhost:8080/policies")
+    fetch("/search/" + status)
     .then(res => res.json())
-    .then(data => {
-        const filtered = data.filter(p => p.status === status);
-        displayPolicies(filtered);
-    });
+    .then(data => showPolicies(data));
 }
 
+// CLEAR FORM
 function clearForm() {
-    document.getElementById("policyName").value = "";
-    document.getElementById("inputText").value = "";
-    document.getElementById("status").value = "";
+    editId = null;
+    document.getElementById("name").value = "";
+    document.getElementById("input").value = "";
 }
 
 </script>
