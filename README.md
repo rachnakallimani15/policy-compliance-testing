@@ -75,6 +75,16 @@ The system ensures proper validation and smooth interaction between frontend and
 - Verified complete CRUD operations (Save, Load, Search, Delete)
 - Cleaned up layout for better user experience
 
+## Day 10 - Enhancements
+
+- Implemented Edit functionality for updating existing policies  
+- Allowed users to modify policy name, input, and status  
+- Integrated PUT API for updating data in backend  
+- Fixed duplicate entry issue while editing  
+- Improved UI for Edit and Delete buttons  
+- Ensured smooth working of all CRUD operations (Save, Load, Search, Update, Delete)  
+- Tested complete frontend and backend integration
+
 ### screenshots
 
 ![UI](screenshots/day6.png)
@@ -84,5 +94,7 @@ The system ensures proper validation and smooth interaction between frontend and
 ![UI](screenshots/day8.png)
 ![UI](screenshots/day9_1.png)
 ![Search](screenshots/day9_2.png)
+![UI](screenshots/day10_1.png)
+![UI](screenshots/day10_2.png)
 
 
