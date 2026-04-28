@@ -65,6 +65,16 @@ The system ensures proper validation and smooth interaction between frontend and
 - Fixed loading issue after saving policy
 - Integrated frontend with backend APIs properly
 
+## Day 9 - Enhancements
+
+- Implemented Search by Status functionality (COMPLIANT, NON_COMPLIANT, PENDING)
+- Fixed button size issue (removed full-width buttons)
+- Improved UI design for better alignment and spacing
+- Displayed status using colored badges (Green, Red, Orange)
+- Ensured proper integration of frontend with backend search API
+- Verified complete CRUD operations (Save, Load, Search, Delete)
+- Cleaned up layout for better user experience
+
 ### screenshots
 
 ![UI](screenshots/day6.png)
@@ -72,6 +82,7 @@ The system ensures proper validation and smooth interaction between frontend and
 ![UI](screenshots/day7_1.png)
 ![UI](screenshots/day7_2.png)
 ![UI](screenshots/day8.png)
-
+![UI](screenshots/day9_1.png)
+![Search](screenshots/day9_2.png)
 
 
