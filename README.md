@@ -17,7 +17,7 @@ The system ensures proper validation and smooth interaction between frontend and
 - **Database** → MySQL
 - **Build Tool** → Maven
 
-## Features Implemented
+## Features Implemented + screenshots
 
 ###  Day 1 – Project Setup
 - Spring Boot project initialized
@@ -47,6 +47,8 @@ The system ensures proper validation and smooth interaction between frontend and
 - Delete functionality implemented
 - search by status implemented
 - UI improvements for better user experience
+![UI](screenshots/day6.png)
+![UI](screenshots/day6main.png)
 
 ### Day 7
 - Implemented Update (Edit) functionality
@@ -55,6 +57,8 @@ The system ensures proper validation and smooth interaction between frontend and
 - Improved UI using dropdown for status selection
 - Form validation added (all fields required)
 - Automatic form reset after saving/updatings
+![UI](screenshots/day7_1.png)
+![UI](screenshots/day7_2.png)
 
 ##  Day 8 - Enhancements
 
@@ -64,6 +68,7 @@ The system ensures proper validation and smooth interaction between frontend and
 - Improved UI layout for better readability
 - Fixed loading issue after saving policy
 - Integrated frontend with backend APIs properly
+![UI](screenshots/day8.png)
 
 ## Day 9 - Enhancements
 
@@ -74,6 +79,8 @@ The system ensures proper validation and smooth interaction between frontend and
 - Ensured proper integration of frontend with backend search API
 - Verified complete CRUD operations (Save, Load, Search, Delete)
 - Cleaned up layout for better user experience
+![UI](screenshots/day9_1.png)
+![Search](screenshots/day9_2.png)
 
 ## Day 10 - Enhancements
 
@@ -84,17 +91,20 @@ The system ensures proper validation and smooth interaction between frontend and
 - Improved UI for Edit and Delete buttons  
 - Ensured smooth working of all CRUD operations (Save, Load, Search, Update, Delete)  
 - Tested complete frontend and backend integration
-
-### screenshots
-
-![UI](screenshots/day6.png)
-![UI](screenshots/day6main.png)
-![UI](screenshots/day7_1.png)
-![UI](screenshots/day7_2.png)
-![UI](screenshots/day8.png)
-![UI](screenshots/day9_1.png)
-![Search](screenshots/day9_2.png)
 ![UI](screenshots/day10_1.png)
 ![UI](screenshots/day10_2.png)
 
+## Day 11 - Enhancements
+
+- Added input validation to prevent empty fields before saving policy
+- Implemented alert messages for Save, Update and Delete operations
+- Added confirmation popup before deleting a policy
+- Implemented automatic form reset after saving/updating
+- Improved UI for better user experience and alignment
+- Replaced search input with dropdown for better usability
+- Tested all CRUD operations (Save, Load, Edit, Delete, Search)
+![Validation](screenshots/day11_validation_alert.png)
+![Delete Confirm](screenshots/day11_delete.png)
+![Edit](screenshots/day11_edit.png)
+![Search](screenshots/day11_search.png)
 

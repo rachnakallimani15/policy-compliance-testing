@@ -1,64 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Policy Compliance System</title>
+    <title>Policy Compliance System</title>
 
-<style>
-body {
-    font-family: Arial;
-    background: #f5f7fa;
-}
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f7fa;
+        }
 
-.container {
-    width: 70%;
-    margin: auto;
-    margin-top: 20px;
-}
+        .container {
+            width: 70%;
+            margin: auto;
+            margin-top: 20px;
+        }
 
-.card {
-    background: white;
-    padding: 15px;
-    margin-top: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
+        .card {
+            background: white;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
 
-input, select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
 
-button {
-    margin-top: 10px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: auto;
-}
+        button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: auto;
+        }
 
-.save { background: green; color: white; }
-.load { background: blue; color: white; }
-.search { background: orange; color: white; }
-.delete { background: red; color: white; }
-.edit { background: gray; color: white; }
+        .save { background: green; color: white; }
+        .load { background: blue; color: white; }
+        .search { background: orange; color: white; }
+        .delete { background: red; color: white; }
+        .edit { background: gray; color: white; }
 
-.badge {
-    padding: 4px 10px;
-    border-radius: 5px;
-    color: white;
-    font-size: 12px;
-}
+        .badge {
+            padding: 4px 10px;
+            border-radius: 5px;
+            color: white;
+            font-size: 12px;
+        }
 
-.COMPLIANT { background: green; }
-.NON_COMPLIANT { background: red; }
-.PENDING { background: orange; }
-
-</style>
+        .COMPLIANT { background: green; }
+        .NON_COMPLIANT { background: red; }
+        .PENDING { background: orange; }
+    </style>
 </head>
 
 <body>
@@ -71,7 +69,7 @@ button {
 <div class="card">
     <input id="name" placeholder="Policy Name">
     <input id="input" placeholder="Input">
-    
+
     <select id="status">
         <option>COMPLIANT</option>
         <option>NON_COMPLIANT</option>
@@ -85,7 +83,14 @@ button {
 <!-- SEARCH -->
 <div class="card">
     <h4>Search by Status</h4>
-    <input id="searchStatus" placeholder="Enter Status">
+
+    <!-- dropdown instead of input -->
+    <select id="searchStatus">
+        <option>COMPLIANT</option>
+        <option>NON_COMPLIANT</option>
+        <option>PENDING</option>
+    </select>
+
     <button class="search" onclick="searchPolicy()">Search</button>
 </div>
 
@@ -104,16 +109,17 @@ let currentEditId = null;
 // SAVE / UPDATE
 function savePolicy() {
 
-    const data = {
-        name: document.getElementById("name").value,
-        input: document.getElementById("input").value,
-        status: document.getElementById("status").value
-    };
+    let name = document.getElementById("name").value;
+    let input = document.getElementById("input").value;
+    let status = document.getElementById("status").value;
 
-    if(data.name === "" || data.input === ""){
-        alert("Fill all fields");
+    // 🔥 VALIDATION
+    if(name === "" || input === ""){
+        alert("Please fill all fields");
         return;
     }
+
+    const data = { name, input, status };
 
     let url = "http://localhost:8080/save";
     let method = "POST";
@@ -129,7 +135,12 @@ function savePolicy() {
         body: JSON.stringify(data)
     })
     .then(() => {
-        alert("Saved Successfully");
+        alert("Saved successfully");
+
+        // 🔥 CLEAR FORM
+        document.getElementById("name").value = "";
+        document.getElementById("input").value = "";
+
         currentEditId = null;
         loadPolicies();
     });
@@ -142,10 +153,15 @@ function loadPolicies(){
     .then(data => display(data));
 }
 
-// DELETE
+// DELETE with confirm
 function deletePolicy(id){
-    fetch("http://localhost:8080/delete/" + id, {method:"DELETE"})
-    .then(() => loadPolicies());
+    if(confirm("Are you sure to delete?")){
+        fetch("http://localhost:8080/delete/" + id, {method:"DELETE"})
+        .then(() => {
+            alert("Deleted successfully");
+            loadPolicies();
+        });
+    }
 }
 
 // SEARCH
