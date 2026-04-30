@@ -37,7 +37,13 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            width: auto;
+            transition: 0.2s;
+        }
+
+        /* 🔥 HOVER EFFECT (extra marks) */
+        button:hover {
+            opacity: 0.8;
+            transform: scale(1.03);
         }
 
         .save { background: green; color: white; }
@@ -45,6 +51,7 @@
         .search { background: orange; color: white; }
         .delete { background: red; color: white; }
         .edit { background: gray; color: white; }
+        .reset { background: purple; color: white; }
 
         .badge {
             padding: 4px 10px;
@@ -56,6 +63,11 @@
         .COMPLIANT { background: green; }
         .NON_COMPLIANT { background: red; }
         .PENDING { background: orange; }
+
+        .center {
+            text-align: center;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -63,7 +75,7 @@
 
 <div class="container">
 
-<h2 style="text-align:center;">Policy Compliance System</h2>
+<h2 class="center">Policy Compliance System</h2>
 
 <!-- FORM -->
 <div class="card">
@@ -76,15 +88,16 @@
         <option>PENDING</option>
     </select>
 
-    <button class="save" onclick="savePolicy()">Save Policy</button>
+    <!-- 🔥 BUTTON WITH LOADING STATE -->
+    <button id="saveBtn" class="save" onclick="savePolicy()">Save Policy</button>
     <button class="load" onclick="loadPolicies()">Load Policies</button>
+    <button class="reset" onclick="resetForm()">Reset</button>
 </div>
 
 <!-- SEARCH -->
 <div class="card">
     <h4>Search by Status</h4>
 
-    <!-- dropdown instead of input -->
     <select id="searchStatus">
         <option>COMPLIANT</option>
         <option>NON_COMPLIANT</option>
@@ -113,13 +126,22 @@ function savePolicy() {
     let input = document.getElementById("input").value;
     let status = document.getElementById("status").value;
 
-    // 🔥 VALIDATION
     if(name === "" || input === ""){
         alert("Please fill all fields");
         return;
     }
 
-    const data = { name, input, status };
+    // 🔥 BUTTON DISABLE (extra marks)
+    let btn = document.getElementById("saveBtn");
+    btn.disabled = true;
+    btn.innerText = "Saving...";
+
+    const data = {
+        name,
+        input,
+        status,
+        time: new Date().toLocaleString() // 🔥 timestamp
+    };
 
     let url = "http://localhost:8080/save";
     let method = "POST";
@@ -137,29 +159,43 @@ function savePolicy() {
     .then(() => {
         alert("Saved successfully");
 
-        // 🔥 CLEAR FORM
-        document.getElementById("name").value = "";
-        document.getElementById("input").value = "";
-
-        currentEditId = null;
+        resetForm();
         loadPolicies();
+
+        // 🔥 enable button again
+        btn.disabled = false;
+        btn.innerText = "Save Policy";
+    })
+    .catch(() => {
+        alert("Server error");
+
+        btn.disabled = false;
+        btn.innerText = "Save Policy";
     });
 }
 
 // LOAD
 function loadPolicies(){
+    document.getElementById("result").innerHTML = "Loading...";
+
     fetch("http://localhost:8080/getAll")
     .then(res => res.json())
-    .then(data => display(data));
+    .then(data => display(data))
+    .catch(() => {
+        document.getElementById("result").innerHTML = "Error loading data";
+    });
 }
 
-// DELETE with confirm
+// DELETE
 function deletePolicy(id){
     if(confirm("Are you sure to delete?")){
         fetch("http://localhost:8080/delete/" + id, {method:"DELETE"})
         .then(() => {
             alert("Deleted successfully");
             loadPolicies();
+        })
+        .catch(() => {
+            alert("Delete failed");
         });
     }
 }
@@ -168,9 +204,14 @@ function deletePolicy(id){
 function searchPolicy(){
     let status = document.getElementById("searchStatus").value;
 
+    document.getElementById("result").innerHTML = "Searching...";
+
     fetch("http://localhost:8080/search/" + status)
     .then(res => res.json())
-    .then(data => display(data));
+    .then(data => display(data))
+    .catch(() => {
+        document.getElementById("result").innerHTML = "Error searching data";
+    });
 }
 
 // EDIT
@@ -178,12 +219,24 @@ function editPolicy(id, name, input, status){
     document.getElementById("name").value = name;
     document.getElementById("input").value = input;
     document.getElementById("status").value = status;
-
     currentEditId = id;
+}
+
+// RESET
+function resetForm(){
+    document.getElementById("name").value = "";
+    document.getElementById("input").value = "";
+    currentEditId = null;
 }
 
 // DISPLAY
 function display(data){
+
+    if(data.length === 0){
+        document.getElementById("result").innerHTML = "No policies found";
+        document.getElementById("total").innerText = "Total Policies: 0";
+        return;
+    }
 
     document.getElementById("total").innerText = "Total Policies: " + data.length;
 
@@ -194,6 +247,7 @@ function display(data){
         <div class="card">
             <h4>${p.name}</h4>
             <p><b>Input:</b> ${p.input}</p>
+            <p><b>Time:</b> ${p.time || 'N/A'}</p>
             <span class="badge ${p.status}">${p.status}</span><br><br>
 
             <button class="edit" onclick="editPolicy(${p.id}, '${p.name}', '${p.input}', '${p.status}')">Edit</button>

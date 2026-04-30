@@ -108,3 +108,17 @@ The system ensures proper validation and smooth interaction between frontend and
 ![Edit](screenshots/day11_edit.png)
 ![Search](screenshots/day11_search.png)
 
+## Day 12 - Enhancements
+
+- Added loading messages while fetching and searching data
+- Implemented "No policies found" handling for empty results
+- Added error handling for server failures
+- Implemented Reset button to clear input fields
+- Improved UI with better spacing, alignment and hover effects
+- Added button loading state (disable + "Saving..." text)
+- Displayed timestamp for each policy entry (extra feature)
+- Enhanced overall user experience
+- Verified all functionalities working correctly
+![Delete](screenshots/day12_delete.png)
+![Search](screenshots/day12_search.png)
+![Final UI](screenshots/day12.png)
