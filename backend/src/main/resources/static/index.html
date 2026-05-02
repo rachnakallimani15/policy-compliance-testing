@@ -5,56 +5,65 @@
 
     <style>
         body {
-            font-family: Arial;
-            background: #f5f7fa;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #ffd6e8, #d6f0ff);
+            margin: 0;
+            padding: 0;
         }
 
         .container {
-            width: 70%;
+            width: 60%;
             margin: auto;
-            margin-top: 20px;
+            margin-top: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c2c2c;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .card {
             background: white;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
         }
 
         input, select {
             width: 100%;
-            padding: 8px;
-            margin-top: 8px;
-            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 6px;
             border: 1px solid #ccc;
         }
 
         button {
             margin-top: 10px;
-            padding: 8px 16px;
+            padding: 10px 18px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: 0.2s;
+            font-weight: bold;
+            transition: 0.3s;
         }
 
-        /* 🔥 HOVER EFFECT (extra marks) */
         button:hover {
-            opacity: 0.8;
-            transform: scale(1.03);
+            transform: scale(1.05);
+            opacity: 0.9;
         }
 
-        .save { background: green; color: white; }
-        .load { background: blue; color: white; }
-        .search { background: orange; color: white; }
-        .delete { background: red; color: white; }
-        .edit { background: gray; color: white; }
-        .reset { background: purple; color: white; }
+        .save { background: #4CAF50; color: white; }
+        .load { background: #4da6ff; color: white; }
+        .search { background: #ffcc66; color: black; }
+        .delete { background: #ff6666; color: white; }
+        .edit { background: #888; color: white; }
+        .reset { background: #b399ff; color: white; }
 
         .badge {
-            padding: 4px 10px;
+            padding: 5px 10px;
             border-radius: 5px;
             color: white;
             font-size: 12px;
@@ -64,9 +73,8 @@
         .NON_COMPLIANT { background: red; }
         .PENDING { background: orange; }
 
-        .center {
-            text-align: center;
-            font-weight: bold;
+        .result-card {
+            border-left: 5px solid #4da6ff;
         }
     </style>
 </head>
@@ -75,9 +83,8 @@
 
 <div class="container">
 
-<h2 class="center">Policy Compliance System</h2>
+<h2>Policy Compliance System</h2>
 
-<!-- FORM -->
 <div class="card">
     <input id="name" placeholder="Policy Name">
     <input id="input" placeholder="Input">
@@ -88,13 +95,11 @@
         <option>PENDING</option>
     </select>
 
-    <!-- 🔥 BUTTON WITH LOADING STATE -->
     <button id="saveBtn" class="save" onclick="savePolicy()">Save Policy</button>
     <button class="load" onclick="loadPolicies()">Load Policies</button>
     <button class="reset" onclick="resetForm()">Reset</button>
 </div>
 
-<!-- SEARCH -->
 <div class="card">
     <h4>Search by Status</h4>
 
@@ -107,7 +112,6 @@
     <button class="search" onclick="searchPolicy()">Search</button>
 </div>
 
-<!-- OUTPUT -->
 <div class="card">
     <h4 id="total">Total Policies: 0</h4>
     <div id="result"></div>
@@ -119,19 +123,17 @@
 
 let currentEditId = null;
 
-// SAVE / UPDATE
 function savePolicy() {
 
     let name = document.getElementById("name").value;
     let input = document.getElementById("input").value;
     let status = document.getElementById("status").value;
 
-    if(name === "" || input === ""){
-        alert("Please fill all fields");
+    if(name.trim() === "" || input.trim() === ""){
+        alert("Please fill all fields!");
         return;
     }
 
-    // 🔥 BUTTON DISABLE (extra marks)
     let btn = document.getElementById("saveBtn");
     btn.disabled = true;
     btn.innerText = "Saving...";
@@ -140,7 +142,7 @@ function savePolicy() {
         name,
         input,
         status,
-        time: new Date().toLocaleString() // 🔥 timestamp
+        time: new Date().toLocaleString()
     };
 
     let url = "http://localhost:8080/save";
@@ -157,24 +159,20 @@ function savePolicy() {
         body: JSON.stringify(data)
     })
     .then(() => {
-        alert("Saved successfully");
-
+        alert("Saved successfully!");
         resetForm();
         loadPolicies();
 
-        // 🔥 enable button again
         btn.disabled = false;
         btn.innerText = "Save Policy";
     })
     .catch(() => {
-        alert("Server error");
-
+        alert("Server error!");
         btn.disabled = false;
         btn.innerText = "Save Policy";
     });
 }
 
-// LOAD
 function loadPolicies(){
     document.getElementById("result").innerHTML = "Loading...";
 
@@ -186,21 +184,16 @@ function loadPolicies(){
     });
 }
 
-// DELETE
 function deletePolicy(id){
-    if(confirm("Are you sure to delete?")){
-        fetch("http://localhost:8080/delete/" + id, {method:"DELETE"})
-        .then(() => {
-            alert("Deleted successfully");
-            loadPolicies();
-        })
-        .catch(() => {
-            alert("Delete failed");
-        });
-    }
+    if(!confirm("Delete this policy?")) return;
+
+    fetch("http://localhost:8080/delete/" + id, {method:"DELETE"})
+    .then(() => {
+        alert("Deleted!");
+        loadPolicies();
+    });
 }
 
-// SEARCH
 function searchPolicy(){
     let status = document.getElementById("searchStatus").value;
 
@@ -208,13 +201,9 @@ function searchPolicy(){
 
     fetch("http://localhost:8080/search/" + status)
     .then(res => res.json())
-    .then(data => display(data))
-    .catch(() => {
-        document.getElementById("result").innerHTML = "Error searching data";
-    });
+    .then(data => display(data));
 }
 
-// EDIT
 function editPolicy(id, name, input, status){
     document.getElementById("name").value = name;
     document.getElementById("input").value = input;
@@ -222,14 +211,12 @@ function editPolicy(id, name, input, status){
     currentEditId = id;
 }
 
-// RESET
 function resetForm(){
     document.getElementById("name").value = "";
     document.getElementById("input").value = "";
     currentEditId = null;
 }
 
-// DISPLAY
 function display(data){
 
     if(data.length === 0){
@@ -244,10 +231,10 @@ function display(data){
 
     data.forEach(p => {
         output += `
-        <div class="card">
+        <div class="card result-card">
             <h4>${p.name}</h4>
             <p><b>Input:</b> ${p.input}</p>
-            <p><b>Time:</b> ${p.time || 'N/A'}</p>
+            <p><b>Time:</b> ${p.time || "N/A"}</p>
             <span class="badge ${p.status}">${p.status}</span><br><br>
 
             <button class="edit" onclick="editPolicy(${p.id}, '${p.name}', '${p.input}', '${p.status}')">Edit</button>

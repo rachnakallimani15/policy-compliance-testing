@@ -51,6 +51,7 @@ The system ensures proper validation and smooth interaction between frontend and
 ![UI](screenshots/day6main.png)
 
 ### Day 7
+
 - Implemented Update (Edit) functionality
 - Completed full CRUD operations (Create, Read, Update, Delete)
 - Added Search by Status feature
