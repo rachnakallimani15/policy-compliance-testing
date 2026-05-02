@@ -123,3 +123,30 @@ The system ensures proper validation and smooth interaction between frontend and
 ![Delete](screenshots/day12_delete.png)
 ![Search](screenshots/day12_search.png)
 ![Final UI](screenshots/day12.png)
+
+### Day 13 – UI Enhancement & Final Testing
+
+#### Work Done:
+- Improved UI with soft gradient background (light pink & blue)
+- Enhanced heading with bold and darker styling
+- Added smooth button hover effects
+- Improved card layout with better spacing and shadow
+- Ensured clean and professional user interface
+
+#### Functional Enhancements:
+- All CRUD operations tested successfully (Save, Load, Edit, Delete, Search)
+- Proper validation for empty input fields
+- Alert messages for user actions (Save, Update, Delete)
+- Confirmation popup before deleting policy
+- Auto reset form after operations
+- Search functionality working with dropdown
+
+#### Screenshots:
+
+![Day 13 Main UI](screenshots/day13.png)  
+![Delete Operation](screenshots/day13_delete.png)  
+![Delete Success](screenshots/day13_delete_success.png)  
+![Search Functionality](screenshots/day13_search.png)
+
+#### Status:
+All features are working correctly and tested successfully.
