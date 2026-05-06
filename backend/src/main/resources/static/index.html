@@ -4,78 +4,140 @@
     <title>Policy Compliance System</title>
 
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(to right, #ffd6e8, #d6f0ff);
-            margin: 0;
-            padding: 0;
+
+        body{
+            font-family:'Segoe UI',sans-serif;
+            background:linear-gradient(to right,#ffd6e8,#d6f0ff);
+            margin:0;
+            padding:0;
         }
 
-        .container {
-            width: 60%;
-            margin: auto;
-            margin-top: 30px;
+        .container{
+            width:60%;
+            margin:auto;
+            margin-top:30px;
         }
 
-        h2 {
-            text-align: center;
-            color: #2c2c2c;
-            font-weight: 700;
-            letter-spacing: 1px;
+        h2{
+            text-align:center;
+            color:#2c2c2c;
+            font-weight:700;
+            letter-spacing:1px;
         }
 
-        .card {
-            background: white;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        .card{
+            background:white;
+            padding:20px;
+            margin-top:20px;
+            border-radius:12px;
+            box-shadow:0 4px 10px rgba(0,0,0,0.08);
         }
 
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
+        /* DAY 14 DASHBOARD STATS */
+        .stats-container{
+            display:flex;
+            gap:15px;
+            margin-top:20px;
         }
 
-        button {
-            margin-top: 10px;
-            padding: 10px 18px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
+        .stats-card{
+            flex:1;
+            padding:20px;
+            border-radius:12px;
+            text-align:center;
+            color:white;
+            font-weight:bold;
+            box-shadow:0 4px 8px rgba(0,0,0,0.1);
         }
 
-        button:hover {
-            transform: scale(1.05);
-            opacity: 0.9;
+        .compliant-card{
+            background:#4CAF50;
         }
 
-        .save { background: #4CAF50; color: white; }
-        .load { background: #4da6ff; color: white; }
-        .search { background: #ffcc66; color: black; }
-        .delete { background: #ff6666; color: white; }
-        .edit { background: #888; color: white; }
-        .reset { background: #b399ff; color: white; }
-
-        .badge {
-            padding: 5px 10px;
-            border-radius: 5px;
-            color: white;
-            font-size: 12px;
+        .noncompliant-card{
+            background:#ff6666;
         }
 
-        .COMPLIANT { background: green; }
-        .NON_COMPLIANT { background: red; }
-        .PENDING { background: orange; }
-
-        .result-card {
-            border-left: 5px solid #4da6ff;
+        .pending-card{
+            background:#ffb347;
         }
+
+        input,select{
+            width:100%;
+            padding:10px;
+            margin-top:10px;
+            border-radius:6px;
+            border:1px solid #ccc;
+        }
+
+        button{
+            margin-top:10px;
+            padding:10px 18px;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+            font-weight:bold;
+            transition:0.3s;
+        }
+
+        button:hover{
+            transform:scale(1.05);
+            opacity:0.9;
+        }
+
+        .save{
+            background:#4CAF50;
+            color:white;
+        }
+
+        .load{
+            background:#4da6ff;
+            color:white;
+        }
+
+        .search{
+            background:#ffcc66;
+            color:black;
+        }
+
+        .delete{
+            background:#ff6666;
+            color:white;
+        }
+
+        .edit{
+            background:#888;
+            color:white;
+        }
+
+        .reset{
+            background:#b399ff;
+            color:white;
+        }
+
+        .badge{
+            padding:5px 10px;
+            border-radius:5px;
+            color:white;
+            font-size:12px;
+        }
+
+        .COMPLIANT{
+            background:green;
+        }
+
+        .NON_COMPLIANT{
+            background:red;
+        }
+
+        .PENDING{
+            background:orange;
+        }
+
+        .result-card{
+            border-left:5px solid #4da6ff;
+        }
+
     </style>
 </head>
 
@@ -83,39 +145,80 @@
 
 <div class="container">
 
-<h2>Policy Compliance System</h2>
+    <h2>Policy Compliance System</h2>
 
-<div class="card">
-    <input id="name" placeholder="Policy Name">
-    <input id="input" placeholder="Input">
+    <!-- FORM -->
+    <div class="card">
 
-    <select id="status">
-        <option>COMPLIANT</option>
-        <option>NON_COMPLIANT</option>
-        <option>PENDING</option>
-    </select>
+        <input id="name" placeholder="Policy Name">
 
-    <button id="saveBtn" class="save" onclick="savePolicy()">Save Policy</button>
-    <button class="load" onclick="loadPolicies()">Load Policies</button>
-    <button class="reset" onclick="resetForm()">Reset</button>
-</div>
+        <input id="input" placeholder="Input">
 
-<div class="card">
-    <h4>Search by Status</h4>
+        <select id="status">
+            <option>COMPLIANT</option>
+            <option>NON_COMPLIANT</option>
+            <option>PENDING</option>
+        </select>
 
-    <select id="searchStatus">
-        <option>COMPLIANT</option>
-        <option>NON_COMPLIANT</option>
-        <option>PENDING</option>
-    </select>
+        <button id="saveBtn" class="save" onclick="savePolicy()">
+            Save Policy
+        </button>
 
-    <button class="search" onclick="searchPolicy()">Search</button>
-</div>
+        <button class="load" onclick="loadPolicies()">
+            Load Policies
+        </button>
 
-<div class="card">
-    <h4 id="total">Total Policies: 0</h4>
-    <div id="result"></div>
-</div>
+        <button class="reset" onclick="resetForm()">
+            Reset
+        </button>
+
+    </div>
+
+    <!-- SEARCH -->
+    <div class="card">
+
+        <h4>Search by Status</h4>
+
+        <select id="searchStatus">
+            <option>COMPLIANT</option>
+            <option>NON_COMPLIANT</option>
+            <option>PENDING</option>
+        </select>
+
+        <button class="search" onclick="searchPolicy()">
+            Search
+        </button>
+
+    </div>
+
+    <!-- DAY 14 DASHBOARD -->
+    <div class="stats-container">
+
+        <div class="stats-card compliant-card">
+            <h3 id="compliantCount">0</h3>
+            <p>Compliant</p>
+        </div>
+
+        <div class="stats-card noncompliant-card">
+            <h3 id="nonCompliantCount">0</h3>
+            <p>Non-Compliant</p>
+        </div>
+
+        <div class="stats-card pending-card">
+            <h3 id="pendingCount">0</h3>
+            <p>Pending</p>
+        </div>
+
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+
+        <h4 id="total">Total Policies: 0</h4>
+
+        <div id="result"></div>
+
+    </div>
 
 </div>
 
@@ -123,7 +226,8 @@
 
 let currentEditId = null;
 
-function savePolicy() {
+// SAVE
+function savePolicy(){
 
     let name = document.getElementById("name").value;
     let input = document.getElementById("input").value;
@@ -135,6 +239,7 @@ function savePolicy() {
     }
 
     let btn = document.getElementById("saveBtn");
+
     btn.disabled = true;
     btn.innerText = "Saving...";
 
@@ -142,7 +247,7 @@ function savePolicy() {
         name,
         input,
         status,
-        time: new Date().toLocaleString()
+        time:new Date().toLocaleString()
     };
 
     let url = "http://localhost:8080/save";
@@ -153,97 +258,211 @@ function savePolicy() {
         method = "PUT";
     }
 
-    fetch(url, {
-        method: method,
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify(data)
+    fetch(url,{
+        method:method,
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify(data)
     })
+
     .then(() => {
+
         alert("Saved successfully!");
+
         resetForm();
+
         loadPolicies();
 
         btn.disabled = false;
         btn.innerText = "Save Policy";
+
     })
+
     .catch(() => {
+
         alert("Server error!");
+
         btn.disabled = false;
         btn.innerText = "Save Policy";
+
     });
+
 }
 
+// LOAD
 function loadPolicies(){
+
     document.getElementById("result").innerHTML = "Loading...";
 
     fetch("http://localhost:8080/getAll")
+
     .then(res => res.json())
+
     .then(data => display(data))
+
     .catch(() => {
-        document.getElementById("result").innerHTML = "Error loading data";
+
+        document.getElementById("result").innerHTML =
+        "Error loading data";
+
     });
+
 }
 
+// DELETE
 function deletePolicy(id){
-    if(!confirm("Delete this policy?")) return;
 
-    fetch("http://localhost:8080/delete/" + id, {method:"DELETE"})
-    .then(() => {
-        alert("Deleted!");
-        loadPolicies();
-    });
-}
-
-function searchPolicy(){
-    let status = document.getElementById("searchStatus").value;
-
-    document.getElementById("result").innerHTML = "Searching...";
-
-    fetch("http://localhost:8080/search/" + status)
-    .then(res => res.json())
-    .then(data => display(data));
-}
-
-function editPolicy(id, name, input, status){
-    document.getElementById("name").value = name;
-    document.getElementById("input").value = input;
-    document.getElementById("status").value = status;
-    currentEditId = id;
-}
-
-function resetForm(){
-    document.getElementById("name").value = "";
-    document.getElementById("input").value = "";
-    currentEditId = null;
-}
-
-function display(data){
-
-    if(data.length === 0){
-        document.getElementById("result").innerHTML = "No policies found";
-        document.getElementById("total").innerText = "Total Policies: 0";
+    if(!confirm("Delete this policy?")){
         return;
     }
 
-    document.getElementById("total").innerText = "Total Policies: " + data.length;
+    fetch("http://localhost:8080/delete/" + id,{
+        method:"DELETE"
+    })
+
+    .then(() => {
+
+        alert("Deleted!");
+
+        loadPolicies();
+
+    });
+
+}
+
+// SEARCH
+function searchPolicy(){
+
+    let status =
+    document.getElementById("searchStatus").value;
+
+    document.getElementById("result").innerHTML =
+    "Searching...";
+
+    fetch("http://localhost:8080/search/" + status)
+
+    .then(res => res.json())
+
+    .then(data => display(data));
+
+}
+
+// EDIT
+function editPolicy(id,name,input,status){
+
+    document.getElementById("name").value = name;
+
+    document.getElementById("input").value = input;
+
+    document.getElementById("status").value = status;
+
+    currentEditId = id;
+
+}
+
+// RESET
+function resetForm(){
+
+    document.getElementById("name").value = "";
+
+    document.getElementById("input").value = "";
+
+    currentEditId = null;
+
+}
+
+// DISPLAY
+function display(data){
+
+    if(data.length === 0){
+
+        document.getElementById("result").innerHTML =
+        "No policies found";
+
+        document.getElementById("total").innerText =
+        "Total Policies: 0";
+
+        return;
+    }
+
+    document.getElementById("total").innerText =
+    "Total Policies: " + data.length;
+
+    // DAY 14 COUNTS
+    let compliant = 0;
+    let nonCompliant = 0;
+    let pending = 0;
+
+    data.forEach(p => {
+
+        if(p.status === "COMPLIANT"){
+            compliant++;
+        }
+
+        else if(p.status === "NON_COMPLIANT"){
+            nonCompliant++;
+        }
+
+        else{
+            pending++;
+        }
+
+    });
+
+    document.getElementById("compliantCount").innerText =
+    compliant;
+
+    document.getElementById("nonCompliantCount").innerText =
+    nonCompliant;
+
+    document.getElementById("pendingCount").innerText =
+    pending;
 
     let output = "";
 
     data.forEach(p => {
-        output += `
-        <div class="card result-card">
-            <h4>${p.name}</h4>
-            <p><b>Input:</b> ${p.input}</p>
-            <p><b>Time:</b> ${p.time || "N/A"}</p>
-            <span class="badge ${p.status}">${p.status}</span><br><br>
 
-            <button class="edit" onclick="editPolicy(${p.id}, '${p.name}', '${p.input}', '${p.status}')">Edit</button>
-            <button class="delete" onclick="deletePolicy(${p.id})">Delete</button>
+        output += `
+
+        <div class="card result-card">
+
+            <h4>${p.name}</h4>
+
+            <p><b>Input:</b> ${p.input}</p>
+
+            <p><b>Time:</b> ${p.time || "N/A"}</p>
+
+            <span class="badge ${p.status}">
+                ${p.status}
+            </span>
+
+            <br><br>
+
+            <button class="edit"
+            onclick="editPolicy(${p.id},
+            '${p.name}',
+            '${p.input}',
+            '${p.status}')">
+
+            Edit
+
+            </button>
+
+            <button class="delete"
+            onclick="deletePolicy(${p.id})">
+
+            Delete
+
+            </button>
+
         </div>
+
         `;
     });
 
     document.getElementById("result").innerHTML = output;
+
 }
 
 </script>

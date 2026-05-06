@@ -140,13 +140,25 @@ The system ensures proper validation and smooth interaction between frontend and
 - Confirmation popup before deleting policy
 - Auto reset form after operations
 - Search functionality working with dropdown
-
-#### Screenshots:
-
 ![Day 13 Main UI](screenshots/day13.png)  
-![Delete Operation](screenshots/day13_delete.png)  
-![Delete Success](screenshots/day13_delete_success.png)  
+![Delete Operation](screenshots/day13_delete.png)   
 ![Search Functionality](screenshots/day13_search.png)
+
+### Day 14 – Dashboard Enhancement & Statistics Module
+
+#### Functional Enhancements:
+- Added dashboard statistics cards for better visualization
+- Displayed total compliant policies count
+- Displayed total non-compliant policies count
+- Displayed total pending policies count
+- Improved UI design with gradient background and colorful cards
+- Enhanced overall user experience and layout
+- Added hover effects and responsive dashboard section
+- Tested all CRUD operations successfully
+![Dashboard UI](screenshots/day14_1.png)
+![Statistics Cards](screenshots/day14_2.png)
+
+
 
 #### Status:
 All features are working correctly and tested successfully.
