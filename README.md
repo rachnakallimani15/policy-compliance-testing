@@ -158,6 +158,32 @@ The system ensures proper validation and smooth interaction between frontend and
 ![Dashboard UI](screenshots/day14_1.png)
 ![Statistics Cards](screenshots/day14_2.png)
 
+## Final Working Project
+
+### Final Enhancements Completed
+- Successfully integrated React frontend with Spring Boot backend
+- Connected MySQL database using JPA Hibernate
+- Implemented complete CRUD operations
+- Added Search Policy functionality
+- Added Edit and Delete operations
+- Added status handling for approved, pending, and rejected policies
+- Improved UI using gradient colors and responsive layout
+- Added attractive dashboard-style design
+- Added validation alerts and proper API handling
+- Tested all functionalities successfully
+- Fixed frontend-backend integration issues
+- Fixed delete API issues
+- Verified all operations using Postman
+- Final project tested successfully
+
+### Screenshots
+![Final Backend Working](screenshots/final_backend_working.png)
+
+![Final Frontend Working](screenshots/final_frontend_working.png)
+
+![Final Postman Testing](screenshots/final_worked_on_postman.png)
+
+![Final Working Project](screenshots/final_working_project.png)
 
 
 #### Status:
