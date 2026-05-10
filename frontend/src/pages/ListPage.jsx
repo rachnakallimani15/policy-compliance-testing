@@ -1,17 +1,14 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../services/api";
 import "./ListPage.css";
 
 function ListPage() {
 
   const [policies, setPolicies] = useState([]);
-
   const [policyInput, setPolicyInput] = useState("");
   const [name, setName] = useState("");
   const [status, setStatus] = useState("");
-
   const [search, setSearch] = useState("");
-
   const [editId, setEditId] = useState(null);
 
   useEffect(() => {
@@ -20,43 +17,40 @@ function ListPage() {
 
   const fetchPolicies = async () => {
     try {
+
       const response = await api.get("/policies");
+
       setPolicies(response.data);
+
     } catch (error) {
       console.log(error);
     }
   };
 
-  const addPolicy = async () => {
+  const handleSubmit = async () => {
 
-    if (
-      policyInput.trim() === "" ||
-      name.trim() === "" ||
-      status.trim() === ""
-    ) {
+    if (!policyInput || !name || !status) {
       alert("Please fill all fields");
       return;
     }
 
-    const newPolicy = {
+    const policyData = {
       input: policyInput,
       name: name,
-      status: status,
+      status: status
     };
 
     try {
 
       if (editId) {
 
-        await api.put(`/policies/${editId}`, newPolicy);
+        await api.put(`/policies/${editId}`, policyData);
 
         alert("Policy Updated Successfully");
 
-        setEditId(null);
-
       } else {
 
-        await api.post("/policies", newPolicy);
+        await api.post("/policies", policyData);
 
         alert("Policy Added Successfully");
       }
@@ -66,38 +60,40 @@ function ListPage() {
       setPolicyInput("");
       setName("");
       setStatus("");
+      setEditId(null);
 
     } catch (error) {
       console.log(error);
-      alert("Operation Failed");
     }
   };
 
-  const deletePolicy = async (id) => {
+  const handleDelete = async (id) => {
+
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete?"
+    );
+
+    if (!confirmDelete) return;
 
     try {
 
       await api.delete(`/policies/${id}`);
 
-      alert("Deleted Successfully");
+      alert("Policy Deleted Successfully");
 
       fetchPolicies();
 
     } catch (error) {
-
       console.log(error);
-
-      alert("Delete Failed");
     }
   };
 
-  const editPolicy = (policy) => {
+  const handleEdit = (policy) => {
 
+    setEditId(policy.id);
     setPolicyInput(policy.input);
     setName(policy.name);
     setStatus(policy.status);
-
-    setEditId(policy.id);
   };
 
   const filteredPolicies = policies.filter((policy) =>
@@ -116,9 +112,7 @@ function ListPage() {
         Manage and monitor all your policies in one place
       </p>
 
-      {/* FORM */}
-
-      <div className="form-box">
+      <div className="form-container">
 
         <input
           type="text"
@@ -134,20 +128,21 @@ function ListPage() {
           onChange={(e) => setName(e.target.value)}
         />
 
-        <input
-          type="text"
-          placeholder="Status"
+        <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-        />
+        >
+          <option value="">Select Status</option>
+          <option value="approved">approved</option>
+          <option value="pending">pending</option>
+          <option value="rejected">rejected</option>
+        </select>
 
-        <button onClick={addPolicy}>
-          {editId ? "Update" : "Add Policy"}
+        <button onClick={handleSubmit}>
+          {editId ? "Update Policy" : "Add Policy"}
         </button>
 
       </div>
-
-      {/* SEARCH */}
 
       <input
         type="text"
@@ -157,11 +152,10 @@ function ListPage() {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      {/* TABLE */}
-
-      <table className="policy-table">
+      <table>
 
         <thead>
+
           <tr>
             <th>ID</th>
             <th>Policy Input</th>
@@ -169,6 +163,7 @@ function ListPage() {
             <th>Status</th>
             <th>Action</th>
           </tr>
+
         </thead>
 
         <tbody>
@@ -184,11 +179,15 @@ function ListPage() {
               <td>{policy.name}</td>
 
               <td
-                className={
-                  policy.status.toLowerCase() === "approved"
-                    ? "approved"
-                    : "pending"
-                }
+                style={{
+                  color:
+                    policy.status?.toLowerCase() === "approved"
+                      ? "green"
+                      : policy.status?.toLowerCase() === "rejected"
+                      ? "red"
+                      : "orange",
+                  fontWeight: "bold",
+                }}
               >
                 {policy.status}
               </td>
@@ -197,14 +196,14 @@ function ListPage() {
 
                 <button
                   className="edit-btn"
-                  onClick={() => editPolicy(policy)}
+                  onClick={() => handleEdit(policy)}
                 >
                   Edit
                 </button>
 
                 <button
                   className="delete-btn"
-                  onClick={() => deletePolicy(policy.id)}
+                  onClick={() => handleDelete(policy.id)}
                 >
                   Delete
                 </button>
@@ -219,9 +218,13 @@ function ListPage() {
 
       </table>
 
-      <div className="count-box">
+      <h3>
         Total Policies: {filteredPolicies.length}
-      </div>
+      </h3>
+
+      <p className="footer">
+        Policy Compliance Testing System © 2026
+      </p>
 
     </div>
   );

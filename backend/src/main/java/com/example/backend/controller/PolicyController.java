@@ -10,49 +10,37 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
+@RequestMapping("/policies")
 public class PolicyController {
 
     @Autowired
     private PolicyCheckRepository repository;
 
-    // GET ALL
-    @GetMapping("/policies")
-    public List<PolicyCheck> getPolicies() {
+    @GetMapping
+    public List<PolicyCheck> getAllPolicies() {
         return repository.findAll();
     }
 
-    // ADD
-    @PostMapping("/policies")
+    @PostMapping
     public PolicyCheck addPolicy(@RequestBody PolicyCheck policy) {
         return repository.save(policy);
     }
 
-    // DELETE
-    @DeleteMapping("/policies/{id}")
-    public String deletePolicy(@PathVariable Long id) {
+    @PutMapping("/{id}")
+    public PolicyCheck updatePolicy(@PathVariable Long id,
+                                    @RequestBody PolicyCheck updatedPolicy) {
 
-        repository.deleteById(id);
+        PolicyCheck policy = repository.findById(id).orElseThrow();
 
-        return "Deleted Successfully";
+        policy.setInput(updatedPolicy.getInput());
+        policy.setName(updatedPolicy.getName());
+        policy.setStatus(updatedPolicy.getStatus());
+
+        return repository.save(policy);
     }
 
-    // UPDATE
-    @PutMapping("/policies/{id}")
-    public PolicyCheck updatePolicy(
-            @PathVariable Long id,
-            @RequestBody PolicyCheck updatedPolicy) {
-
-        PolicyCheck policy = repository.findById(id).orElse(null);
-
-        if (policy != null) {
-
-            policy.setInput(updatedPolicy.getInput());
-            policy.setName(updatedPolicy.getName());
-            policy.setStatus(updatedPolicy.getStatus());
-
-            return repository.save(policy);
-        }
-
-        return null;
+    @DeleteMapping("/{id}")
+    public void deletePolicy(@PathVariable Long id) {
+        repository.deleteById(id);
     }
 }
